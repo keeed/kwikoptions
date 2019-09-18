@@ -1,0 +1,14 @@
+{
+    "DynamicOptions": {
+        "OptionsProviders": [
+            {
+                "OptionsPath": "SampleOptions",
+                "Type": "KwikOptions.Tests.SampleOptionsProvider, KwikOptions.Tests",
+                "Assembly": "KwikOptions.Tests.dll"
+            }
+        ]
+    },
+    "SampleOptions": {
+        "Value": "Hello"
+    }
+}
