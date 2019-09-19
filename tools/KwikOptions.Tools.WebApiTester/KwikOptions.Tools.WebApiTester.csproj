@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\KwikOptions\KwikOptions.csproj" />
   </ItemGroup>
 
 </Project>
