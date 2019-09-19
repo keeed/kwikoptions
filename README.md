@@ -1,2 +1,2 @@
 # kwikoptions
-A library for dynamically injecting Options in ASP.NET Core
+A library for dynamically injecting Options in ServiceCollection.

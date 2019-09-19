@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>KwikOptions</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Kedren Villena,keeed</Authors>
+    <Description>A service for dynamically injecting Options (Options Pattern) to the Service Collection.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/keeed/kwikoptions</PackageProjectUrl>
+    <PackageTags>options;options-pattern</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
