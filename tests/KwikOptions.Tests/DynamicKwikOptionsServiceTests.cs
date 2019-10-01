@@ -11,25 +11,22 @@ using KwikOptions.OptionsProviders;
 
 namespace KwikOptions.Tests
 {
-    public partial class KwikOptionsServiceTests
+    public class DynamicKwikOptionsServiceTests
     {
         [Fact]
         public void Should_Invoke_Provider()
         {
             // Given:
-            var optionsProvider = new SampleOptionsProvider();
-
-            // And:
             var serviceCollection = new ServiceCollection();
 
             // And: 
             var rawConfiguration = @"
             {
                 ""KwikOptions"": {
-                    ""OptionsProviders"": [
+                    ""OptionsTypes"": [
                         {
                             ""OptionsPath"": ""SampleOptions"",
-                            ""Type"": ""KwikOptions.Tests.SampleOptionsProvider, KwikOptions.Tests"",
+                            ""Type"": ""KwikOptions.Tests.SampleOptions, KwikOptions.Tests"",
                             ""Assembly"": ""KwikOptions.Tests.dll""
                         }
                     ]
@@ -47,7 +44,11 @@ namespace KwikOptions.Tests
                    .Build();
 
             // And:
-            var sut = new KwikOptionsService(serviceCollection, configuration);
+            var options = new RootKwikOptions();
+            configuration.GetSection("KwikOptions").Bind(options);
+
+            // And:
+            var sut = new DynamicKwikOptionsService(serviceCollection, configuration, options);
 
             // When:
             sut.InjectOptions();
@@ -62,24 +63,21 @@ namespace KwikOptions.Tests
         public void Should_Inject_Only_One_Options()
         {
             // Given:
-            var optionsProvider = new SampleOptionsProvider();
-
-            // And:
             var serviceCollection = new ServiceCollection();
 
             // And: 
             var rawConfiguration = @"
             {
                 ""KwikOptions"": {
-                    ""OptionsProviders"": [
+                    ""OptionsTypes"": [
                         {
                             ""OptionsPath"": ""SampleOptions"",
-                            ""Type"": ""KwikOptions.Tests.SampleOptionsProvider, KwikOptions.Tests"",
+                            ""Type"": ""KwikOptions.Tests.SampleOptions, KwikOptions.Tests"",
                             ""Assembly"": ""KwikOptions.Tests.dll""
                         },
                         {
                             ""OptionsPath"": ""SampleOptions"",
-                            ""Type"": ""KwikOptions.Tests.SampleOptionsProvider, KwikOptions.Tests"",
+                            ""Type"": ""KwikOptions.Tests.SampleOptions, KwikOptions.Tests"",
                             ""Assembly"": ""KwikOptions.Tests.dll""
                         }
                     ]
@@ -97,7 +95,11 @@ namespace KwikOptions.Tests
                    .Build();
 
             // And:
-            var sut = new KwikOptionsService(serviceCollection, configuration);
+            var options = new RootKwikOptions();
+            configuration.GetSection("KwikOptions").Bind(options);
+
+            // And:
+            var sut = new DynamicKwikOptionsService(serviceCollection, configuration, options);
 
             // When:
             sut.InjectOptions();
@@ -112,24 +114,21 @@ namespace KwikOptions.Tests
         public void Should_Inject_Two_Options()
         {
             // Given:
-            var optionsProvider = new SampleOptionsProvider();
-
-            // And:
             var serviceCollection = new ServiceCollection();
 
             // And: 
             var rawConfiguration = @"
             {
                 ""KwikOptions"": {
-                    ""OptionsProviders"": [
+                    ""OptionsTypes"": [
                         {
                             ""OptionsPath"": ""SampleOptions"",
-                            ""Type"": ""KwikOptions.Tests.SampleOptionsProvider, KwikOptions.Tests"",
+                            ""Type"": ""KwikOptions.Tests.SampleOptions, KwikOptions.Tests"",
                             ""Assembly"": ""KwikOptions.Tests.dll""
                         },
                         {
                             ""OptionsPath"": ""SampleOptions"",
-                            ""Type"": ""KwikOptions.Tests.AnotherOptionsProvider, KwikOptions.Tests"",
+                            ""Type"": ""KwikOptions.Tests.OtherOptions, KwikOptions.Tests"",
                             ""Assembly"": ""KwikOptions.Tests.dll""
                         }
                     ]
@@ -147,7 +146,11 @@ namespace KwikOptions.Tests
                    .Build();
 
             // And:
-            var sut = new KwikOptionsService(serviceCollection, configuration);
+            var options = new RootKwikOptions();
+            configuration.GetSection("KwikOptions").Bind(options);
+
+            // And:
+            var sut = new DynamicKwikOptionsService(serviceCollection, configuration, options);
 
             // When:
             sut.InjectOptions();
@@ -157,15 +160,5 @@ namespace KwikOptions.Tests
 
             Assert.Equal(1, sampleOptions.ToList().Count);
         }
-    }
-
-    public class SampleOptionsProvider : BasicOptionsProvider<SampleOptions>
-    {
-
-    }
-
-    public class AnotherOptionsProvider : BasicOptionsProvider<OtherOptions>
-    {
-
     }
 }

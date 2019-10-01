@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace KwikOptions
 {
-    public class KwikOptionsService
+    public class KwikOptionsService : IKwikOptionsService
     {
         public KwikOptionsService(
             IServiceCollection serviceCollection,
@@ -38,7 +38,7 @@ namespace KwikOptions
 
             foreach (var optionsProvider in rootKwikOptions.OptionsProviders)
             {
-                LoadAssemblyIfNotLoaded(optionsProvider.Assembly);
+                AssemblyUtilities.LoadAssemblyIfNotLoaded(optionsProvider.Assembly);
                 Type optionsType = Type.GetType(optionsProvider.Type);
                 var providerInstance =
                     (IOptionsProvider)ActivatorUtilities
@@ -46,21 +46,8 @@ namespace KwikOptions
 
                 providerInstance
                     .ConfigureOption(
-                        ServiceCollection, 
+                        ServiceCollection,
                         Configuration.GetSection(optionsProvider.OptionsPath));
-            }
-        }
-
-        private void LoadAssemblyIfNotLoaded(string assemblyName)
-        {
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            var assembly = assemblies.FirstOrDefault(
-                    a => a.GetName().Name == assemblyName.Remove(assemblyName.Length - 4));
-
-            if (assembly == null)
-            {
-                Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + assemblyName);
             }
         }
     }
