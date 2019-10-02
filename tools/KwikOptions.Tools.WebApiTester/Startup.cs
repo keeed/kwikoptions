@@ -26,8 +26,7 @@ namespace KwikOptions.Tools.WebApiTester
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            new KwikOptionsService(services, Configuration).InjectOptions();
+            services.UseKwikOptions(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
