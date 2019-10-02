@@ -6,7 +6,7 @@ namespace KwikOptions
 {
     public static class KwikOptionsServiceCollectionExtensions
     {
-        public static IServiceCollection UswKwikOptions(
+        public static IServiceCollection UseKwikOptions(
             this IServiceCollection services,
             IConfiguration configuration)
         {
